@@ -1,20 +1,21 @@
-package com.e4developer.kafkaintro;
+package com.mumudeveloper.kafkaexample;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class KafkaWebController {
 
     @Autowired
-    KafkaSender kafkaSender;
+    KafkaProducer kafkaSender;
 
     @PostMapping("/kafka/{topicName}")
-    public String sendToTopic(@PathVariable String topicName, @RequestBody String message) {
-        kafkaSender.send(topicName, message);
+    public String sendToTopic(@PathVariable String topicName, @RequestBody Person person) {
+    	System.out.println(person);
+        kafkaSender.send(topicName, person);
         return "Message sent";
     }
 
