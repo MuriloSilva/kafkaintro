@@ -17,13 +17,23 @@ public class ConsumerConfig {
 	@Value("${spring.kafka.bootstrap-servers}")
 	private String bootstrapServers;
 
+	@Value("${spring.kafka.producer.key-serializer}")
+	private String keyDeserializerClass;
+
+	@Value("${spring.kafka.producer.value-serializer}")	
+	private String valueDeserializerClass;
+	
+	@Value("${spring.kafka.consumer.group-id}")
+	private String groupId;
+
 	@Bean
 	public Map<String, Object> consumerConfigs() {
 		Map<String, Object> props = new HashMap<>();
 		props.put(org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		props.put(org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		props.put(org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-		props.put(org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG, "json");
+		props.put(org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,keyDeserializerClass);
+		props.put(org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,valueDeserializerClass);
+//		  configura o groupId default quando o mesmo não é informado no Consumer
+		props.put(org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG, groupId);
 
 		return props;
 	}
