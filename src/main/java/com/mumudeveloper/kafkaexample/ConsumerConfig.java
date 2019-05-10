@@ -3,6 +3,7 @@ package com.mumudeveloper.kafkaexample;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.adapter.RecordFilterStrategy;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 @Configuration
@@ -17,10 +19,10 @@ public class ConsumerConfig {
 	@Value("${spring.kafka.bootstrap-servers}")
 	private String bootstrapServers;
 
-	@Value("${spring.kafka.producer.key-serializer}")
+	@Value("${spring.kafka.consumer.key-deserializer}")
 	private String keyDeserializerClass;
 
-	@Value("${spring.kafka.producer.value-serializer}")	
+	@Value("${spring.kafka.consumer.value-deserializer}")	
 	private String valueDeserializerClass;
 	
 	@Value("${spring.kafka.consumer.group-id}")
@@ -48,7 +50,14 @@ public class ConsumerConfig {
 	public ConcurrentKafkaListenerContainerFactory<String, Person> kafkaListenerContainerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, Person> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
-
+		return factory;
+	}
+	
+	@Bean
+	public ConcurrentKafkaListenerContainerFactory<String, Person> kafkaListenerContainerFactoryWithFilter() {
+		ConcurrentKafkaListenerContainerFactory<String, Person> factory = new ConcurrentKafkaListenerContainerFactory<>();
+		factory.setConsumerFactory(consumerFactory());
+		factory.setRecordFilterStrategy(record -> record.value().getAge() == 30);
 		return factory;
 	}
 }

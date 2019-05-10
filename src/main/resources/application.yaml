@@ -4,9 +4,13 @@ spring:
       
       consumer:
          group-id: kafka-intro
-      
+         key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+         value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#          properties: 
+#             spring:
+#                json:
+#                   trusted: 'com.mumudeveloper.kafkaexample.Person'
+               
       producer:
          key-serializer: org.apache.kafka.common.serialization.StringSerializer
-         value-serializer: org.springframework.kafka.support.serializer.JsonSerializer        
-         key-deserializer: org.apache.kafka.common.deserialization.StringSerializer
-         value-deserializer: org.springframework.kafka.support.deserializer.JsonSerializer
+         value-serializer: org.springframework.kafka.support.serializer.JsonSerializer         

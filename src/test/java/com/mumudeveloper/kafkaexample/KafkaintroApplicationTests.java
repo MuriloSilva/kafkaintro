@@ -17,5 +17,4 @@ public class KafkaintroApplicationTests {
     public void contextLoads() {
     	logger.info("Só {} Murilo de {}", "vai", "Paula");
     }
-
 }
